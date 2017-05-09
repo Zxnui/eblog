@@ -1,0 +1,32 @@
+{
+  "file":[
+    {"name":"base","id":1,"parentId":0},
+    {"name":"algorithm","id":2,"parentId":0},
+    {"name":"ant","id":3,"parentId":0},
+    {"name":"docker","id":4,"parentId":0},
+    {"name":"golang","id":5,"parentId":0},
+    {"name":"html5","id":6,"parentId":0},
+    {"name":"java","id":7,"parentId":0},
+    {"name":"jvm","id":8,"parentId":0},
+    {"name":"linux","id":9,"parentId":0},
+    {"name":"lisp","id":10,"parentId":0},
+    {"name":"maven","id":11,"parentId":0},
+    {"name":"mysql","id":12,"parentId":0},
+    {"name":"other","id":13,"parentId":0},
+    {"name":"python","id":14,"parentId":0},
+    {"name":"spring","id":15,"parentId":0},
+    {"name":"设计模式","id":16,"parentId":0},
+    {"name":"AVL树","id":17,"parentId":2},
+    {"name":"二叉查找树","id":18,"parentId":2},
+    {"name":"流量限量算法","id":19,"parentId":2},
+    {"name":"红黑树","id":20,"parentId":2},
+    {"name":"base","id":21,"parentId":0},
+    {"name":"computer","id":22,"parentId":0},
+    {"name":"IPv4","id":23,"parentId":0},
+    {"name":"IPv6","id":24,"parentId":0},
+    {"name":"ports","id":25,"parentId":0},
+    {"name":"字符编码","id":26,"parentId":0},
+    {"name":"应用层协议","id":27,"parentId":0}
+  ],
+  "maxId":27
+}
