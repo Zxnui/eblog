@@ -20,13 +20,13 @@
     {"name":"二叉查找树","id":18,"parentId":2},
     {"name":"流量限量算法","id":19,"parentId":2},
     {"name":"红黑树","id":20,"parentId":2},
-    {"name":"base","id":21,"parentId":0},
-    {"name":"computer","id":22,"parentId":0},
-    {"name":"IPv4","id":23,"parentId":0},
-    {"name":"IPv6","id":24,"parentId":0},
-    {"name":"ports","id":25,"parentId":0},
-    {"name":"字符编码","id":26,"parentId":0},
-    {"name":"应用层协议","id":27,"parentId":0}
+    {"name":"base","id":21,"parentId":1},
+    {"name":"computer","id":22,"parentId":1},
+    {"name":"IPv4","id":23,"parentId":1},
+    {"name":"IPv6","id":24,"parentId":1},
+    {"name":"ports","id":25,"parentId":1},
+    {"name":"字符编码","id":26,"parentId":1},
+    {"name":"应用层协议","id":27,"parentId":1}
   ],
   "maxId":27
 }
