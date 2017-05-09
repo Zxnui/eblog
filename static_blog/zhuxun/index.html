@@ -85,7 +85,7 @@
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
                 <div id="append-md">
-                    <textarea>#1##2###3</textarea>
+                    <textarea style="display: none"></textarea>
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
         $('.blog_click').on('click',function () {
             var fileName = $(this).text()+".md";
             var fileDir = $(this).parent().parent().siblings().text();
-            $('#append-md textarea').empty();
+            $('.markdown-body').empty();
             $.get('/md/'+fileDir+'/'+fileName, function(markdown) {
                 editormd.markdownToHTML("append-md", {
                     markdown        : markdown ,//+ "\r\n" + $("#append-test").text(),
