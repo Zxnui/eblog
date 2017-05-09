@@ -120,16 +120,17 @@
         $('.blog_click').on('click',function () {
             var fileName = $(this).text()+".md";
             var fileDir = $(this).parent().parent().siblings().text();
-            console.log('md/'+fileDir+'/'+fileName);
             $('#append-md textarea').empty();
-            $('#append-md textarea').load('./md/'+fileDir+'/'+fileName);
-            editormd.markdownToHTML("append-md", {
-                htmlDecode      : "style,script,iframe",  // you can filter tags decode
-                emoji           : true,
-                taskList        : true,
-                tex             : true,  // 默认不解析
-                flowChart       : true,  // 默认不解析
-                sequenceDiagram : true,  // 默认不解析
+            $.get('/md/'+fileDir+'/'+fileName, function(markdown) {
+                editormd.markdownToHTML("append-md", {
+                    markdown        : markdown ,//+ "\r\n" + $("#append-test").text(),
+                    htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                    emoji           : true,
+                    taskList        : true,
+                    tex             : true,  // 默认不解析
+                    flowChart       : true,  // 默认不解析
+                    sequenceDiagram : true,  // 默认不解析
+                });
             });
         })
     })
