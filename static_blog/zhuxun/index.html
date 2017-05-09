@@ -1,3 +1,143 @@
+<!DOCTYPE html>
 <html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="auther" content="zxnui">
+    <meta name="keywords" content="team-http team_http">
+    <meta name="description" content="team-http team_http">
+    <link rel="icon" href="../../static/images/favicon.ico"/>
+    <script src="../../static/js/jquery-2.1.1.js"></script>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../../static/css/font-awesome.css" rel="stylesheet"/>
+
+    <link href="../../static/css/toastr.min.css" rel="stylesheet"/>
+    <link href="../../static/css/jquery.gritter.css" rel="stylesheet"/>
+
+    <link href="../../static/css/animate.css" rel="stylesheet"/>
+    <link href="../../static/css/style.css" rel="stylesheet"/>
+
+    <link href="../../static/css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
+    <link href="../../static/editor/css/editormd.min.css" rel="stylesheet"/>
+    <title>Zxnui博客</title>
+</head>
+
+<body>
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <a href="/">
+                            <img alt="image" class="img-circle" src="img/logo.gif" />
+                        </a>
+                    </div>
+                    <div class="logo-element">
+                        Zxnui
+                    </div>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-th-large"></i><span class="nav-label">java</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="javascript:void(0);" class="blog_click">base</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">final</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">iterator</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">protected</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">static</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">thread</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">反射</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">多态</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">封装</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">抽象和接口</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">类装载和初始化</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">继承</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">违例</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">集合</a></li>
+                        <li><a href="javascript:void(0);" class="blog_click">静态工厂方法</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message"></span>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-bell"></i>  <span class="label label-primary">3</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/login"><i class="fa fa-sign-out"></i> 登录</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div id="append-md">
+                    <textarea>#1##2###3</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>
+                <label>copyrght © 2017 team-http.cn. All Rights Reserved.<a target="_blank" href="http://www.miitbeian.gov.cn">苏ICP备16009936号-1</a></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/jquery.metisMenu.js"></script>
+<script src="../../static/js/jquery.slimscroll.min.js"></script>
+
+<script src="../../static/js/inspinia.js"></script>
+<script src="../../static/js/pace.min.js"></script>
+
+<script src="../../static/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../static/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="../../static/editor/editormd.min.js"></script>
+<script src="../../static/editor/lib/marked.min.js"></script>
+<script src="../../static/editor/lib/prettify.min.js"></script>
+
+<script src="../../static/editor/lib/raphael.min.js"></script>
+<script src="../../static/editor/lib/underscore.min.js"></script>
+<script src="../../static/editor/lib/sequence-diagram.min.js"></script>
+<script src="../../static/editor/lib/flowchart.min.js"></script>
+<script src="../../static/editor/lib/jquery.flowchart.min.js"></script>
+
+<script>
+    $(function () {
+        $('.blog_click').on('click',function () {
+            var fileName = $(this).text()+".md";
+            var fileDir = $(this).parent().parent().siblings().text();
+            console.log('md/'+fileDir+'/'+fileName);
+            $('#append-md textarea').empty();
+            $('#append-md textarea').load('./md/'+fileDir+'/'+fileName);
+            editormd.markdownToHTML("append-md", {
+                htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                emoji           : true,
+                taskList        : true,
+                tex             : true,  // 默认不解析
+                flowChart       : true,  // 默认不解析
+                sequenceDiagram : true,  // 默认不解析
+            });
+        })
+    })
+</script>
+
+</body>
 
 </html>
