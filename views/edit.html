@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{template "commons/head.html" .}}
+    <link rel="stylesheet" href="/static/editor/css/editormd.css">
+    <title>编辑</title>
+</head>
+
+<body>
+<div id="wrapper">
+    {{template "commons/menu_left.html" .}}
+    <div id="page-wrapper" class="gray-bg">
+        {{template "commons/menu_top.html" .}}
+        {{template "commons/modal.html" .}}
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div id="layout">
+                    <div id="test-editormd">
+                        <textarea style="display:none;" name="markdown">
+#标题1
+##标题2
+###标题3
+####标题4
+#####标题5
+- 列表1
+- 列表2
+- 列表3
+1. 排序1
+2. 排序2
+3. 排序3
+
+####html代码显示事例：
+
+```
+<!DOCTYPE html>
+<html>
+    <head>
+        <mate charest="utf-8" />
+        <title>Hello world!</title>
+    </head>
+    <body>
+        <h1>Hello world!</h1>
+    </body>
+</html>
+
+```
+####js代码显示事例：
+
+```
+function test(){
+	console.log("Hello world!");
+}
+
+```
+
+#### 行内代码 Inline code
+
+执行命令：`npm install marked`
+
+#### 锚点与链接 Links
+
+[普通链接](http://localhost/)
+[普通链接带标题](http://localhost/ "普通链接带标题")
+直接链接：<https://github.com>
+
+####引用
+
+> 人生寂寞，寂寞人生
+> 人生寂寞，寂寞人生
+> 人生寂寞，寂寞人生
+> 人生寂寞，寂寞人生
+</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <button type="button" class="btn btn-block btn-success">保存</button>
+                </div>
+            </div>
+        </div>
+
+        {{template "commons/html_foot.html" .}}
+    </div>
+</div>
+
+{{template "commons/foot.html" .}}
+<script src="/static/editor/editormd.min.js"></script>
+<script>
+    var testEditor;
+
+    $(function() {
+        testEditor = editormd("test-editormd", {
+            width   : "100%",
+            height  : "100%",
+            syncScrolling : "single",
+            path    : "/static/editor/lib/"
+        });
+    });
+
+</script>
+</body>
+</html>
