@@ -98,8 +98,7 @@
 <script>
     $(function () {
         load_menu();
-
-        $('.blog_click').on('click',function () {
+        $(document).on('click','.blog_click',function(){
             var fileName = $(this).text()+".md";
             var fileDir = $(this).parent().parent().siblings().text();
             $('.markdown-body').empty();
