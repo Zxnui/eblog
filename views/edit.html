@@ -8,19 +8,51 @@
 
 <body>
 <div id="wrapper">
-    {{template "commons/menu_left.html" .}}
+    {{template "commons/menu_left.html" 2}}
     <div id="page-wrapper" class="gray-bg">
         {{template "commons/menu_top.html" .}}
         {{template "commons/modal.html" .}}
 
         <div class="wrapper wrapper-content animated fadeInRight">
-            <div class="row" style="margin-bottom: 10px">
-                <button type="button" class="btn btn-block btn-success">保存</button>
+            <div class="row">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>博客菜单</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table id="tb_departments"></table>
+                    </div>
+                </div>
             </div>
             <div class="row">
-                <div id="layout">
-                    <div id="test-editormd">
-                        <textarea style="display:none;" name="markdown">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>日志详情</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row" style="margin-bottom: 10px">
+                            <button type="button" class="btn btn-block btn-success">保存</button>
+                        </div>
+                        <div class="row">
+                            <div id="layout">
+                                <div id="test-editormd">
+                    <textarea style="display:none;" name="markdown">
 #标题1
 ##标题2
 ###标题3
@@ -38,13 +70,13 @@
 ```
 <!DOCTYPE html>
 <html>
-    <head>
-        <mate charest="utf-8" />
-        <title>Hello world!</title>
-    </head>
-    <body>
-        <h1>Hello world!</h1>
-    </body>
+<head>
+    <mate charest="utf-8" />
+    <title>Hello world!</title>
+</head>
+<body>
+    <h1>Hello world!</h1>
+</body>
 </html>
 
 ```
@@ -52,7 +84,7 @@
 
 ```
 function test(){
-	console.log("Hello world!");
+console.log("Hello world!");
 }
 
 ```
@@ -74,6 +106,9 @@ function test(){
 > 人生寂寞，寂寞人生
 > 人生寂寞，寂寞人生
 </textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,15 +122,84 @@ function test(){
 <script src="/static/editor/editormd.min.js"></script>
 <script>
     var testEditor;
+    var parentList = new Array();
 
     $(function() {
+        //md在线编译器
         testEditor = editormd("test-editormd", {
             width   : "100%",
             height  : document.body.clientHeight*.8,
             syncScrolling : "single",
             path    : "/static/editor/lib/"
         });
+
+        getMenu();
+
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+
     });
+
+    function getMenu() {
+        $.post('/eblog/getMenu',function (result) {
+            if (result.code==1){
+                $.each(result.data.menu_list,function (index,value) {
+                    if(value.parentId==0){
+                        parentList[parentList.length] = value
+                    }else{
+
+                    }
+                })
+                console.log(parentList)
+            }else{
+                $('#myModal .modal-body').empty();
+                $('#myModal .modal-body').append(result.msg);
+                $('#myModal').modal('show');
+            }
+        })
+    }
+
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#tb_departments').bootstrapTable({
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: false,                   //是否显示分页（*）
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: false,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//                height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: true,                   //是否显示父子表
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'name',
+                    title: '部门名称'
+                }, {
+                    field: 'ParentName',
+                    title: '上级部门'
+                }, {
+                    field: 'Level',
+                    title: '部门级别'
+                }, {
+                    field: 'Desc',
+                    title: '描述'
+                }],
+                data:parentList
+            });
+        };
+
+        return oTableInit;
+    };
 
 </script>
 </body>

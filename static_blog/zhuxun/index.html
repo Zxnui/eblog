@@ -124,7 +124,7 @@
         var item = '<li><a href="javascript:void(0);" class="blog_click">fileNameItem</a></li>';
 
         $.get("base.json",function (data) {
-            $.each(data.file,function (index,value) {
+            $.each(data.menu_list,function (index,value) {
                 if(value.parentId==0){
                     var menu_item = menu;
                     menu_item = menu_item.replace('fileName',value.name);

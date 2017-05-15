@@ -11,10 +11,10 @@
                     IN+
                 </div>
             </li>
-            <li class="active">
+            <li {{if eq 1 .}}class="active"{{end}}>
                 <a href="/"><i class="fa fa-diamond"></i> <span class="nav-label">常用链接</span></a>
             </li>
-            <li>
+            <li {{if eq 2 .}}class="active"{{end}}>
                 <a href="/edit"><i class="fa fa-diamond"></i> <span class="nav-label">MD编辑器</span></a>
             </li>
             <li>

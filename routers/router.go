@@ -10,4 +10,6 @@ func init() {
 	beego.Router("/edit", &controllers.MainController{},"*:Edit")
 	beego.Router("/sign",&controllers.UserController{},"*:Sign")
 	beego.Router("/signOut",&controllers.UserController{},"*:SignOut")
+
+	beego.Router("/eblog/getMenu",&controllers.BlogController{},"*:GetMenu")
 }

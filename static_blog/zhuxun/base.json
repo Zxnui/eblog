@@ -1,5 +1,5 @@
 {
-  "file":[
+  "menu_list":[
     {"name":"base","id":1,"parentId":0},
     {"name":"algorithm","id":2,"parentId":0},
     {"name":"ant","id":3,"parentId":0},

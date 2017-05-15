@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	beego.Debug("eblog is begin")
 	beego.Run()
 }
 
