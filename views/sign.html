@@ -43,8 +43,8 @@
 
         $.post("/sign",
                 {
-                    name:name,
-                    password:pwd
+                    Name:name,
+                    Password:pwd
                 },
                 function(data){
                     if (data.code == 0){
@@ -53,7 +53,7 @@
                         $('#myModal').modal('show');
                         return false;
                     }else{
-//                        window.location.href='/';
+                        window.location.href='/';
                     }
                 });
     }

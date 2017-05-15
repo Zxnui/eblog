@@ -8,7 +8,11 @@
                 <span class="m-r-sm text-muted welcome-message">{{.UserName}}</span>
             </li>
             <li>
+            {{if .UserName}}
+                <a href="/signOut"><i class="fa fa-sign-out"></i> 退出</a>
+            {{else}}
                 <a href="/sign"><i class="fa fa-sign-in"></i> 登录</a>
+            {{end}}
             </li>
         </ul>
     </nav>
