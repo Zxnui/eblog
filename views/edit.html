@@ -46,13 +46,23 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <div class="row" style="margin-bottom: 10px">
-                            <button type="button" class="btn btn-block btn-success">保存</button>
-                        </div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="menu_id" class="col-sm-2 control-label">菜单</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" name="menu_id" id="menu_id">
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                   <input class="form-control" id="menu_name" placeholder="文件名称">
+                                </div>
+                                <button type="button" class="btn btn-success" id="save_blog">保存</button>
+                            </div>
+                        </form>
                         <div class="row">
                             <div id="layout">
                                 <div id="test-editormd">
-                    <textarea style="display:none;" name="markdown">
+                    <textarea id="markdown_text" style="display:none;" name="markdown">
 #标题1
 ##标题2
 ###标题3
@@ -122,7 +132,8 @@ console.log("Hello world!");
 <script src="/static/editor/editormd.min.js"></script>
 <script>
     var testEditor;
-    var parentList = new Array();
+    var parentList = new Array;
+    var childList = new Array;
 
     $(function() {
         //md在线编译器
@@ -139,7 +150,29 @@ console.log("Hello world!");
         var oTable = new TableInit();
         oTable.Init();
 
+        $('#save_blog').on('click',function () {
+            $.post('/eblog/save',
+                {
+                    parentId:$('#menu_id').val(),
+                    text:$('#markdown_text ').val(),
+                    name:$('#menu_name').val(),
+                    parentName:$('#menu_id').find("option:selected").text()
+                },
+            function (result) {
+                if (result.code==1){
+                    getMenu();
+                    $('#myModal .modal-body').empty();
+                    $('#myModal .modal-body').append("保存成功");
+                    $('#myModal').modal('show');
+                }else{
+                    $('#myModal .modal-body').empty();
+                    $('#myModal .modal-body').append(result.msg);
+                    $('#myModal').modal('show');
+                }
+            })
+        })
     });
+
 
     function getMenu() {
         $.post('/eblog/getMenu',function (result) {
@@ -148,21 +181,36 @@ console.log("Hello world!");
                     if(value.parentId==0){
                         parentList[parentList.length] = value
                     }else{
+                        if(childList[value.parentId]==undefined){
+                            childList[value.parentId] = new Array
+                        }
+                        childList[value.parentId][childList[value.parentId].length] = value
 
                     }
                 })
-                console.log(parentList)
+
+                $('#tb_departments').bootstrapTable("load",parentList)
+
+                //博客保存菜单加载
+                loadMenu();
             }else{
                 $('#myModal .modal-body').empty();
                 $('#myModal .modal-body').append(result.msg);
                 $('#myModal').modal('show');
             }
-        })
+        },"json")
+    }
+
+    function loadMenu() {
+        $("#menu_id").empty();
+        for(var i=0;i<parentList.length;i++){
+            $("#menu_id").append('<option value="'+parentList[i].id+'">'+parentList[i].name+'</option>')
+        }
     }
 
     var TableInit = function () {
         var oTableInit = new Object();
-        //初始化Table
+
         oTableInit.Init = function () {
             $('#tb_departments').bootstrapTable({
                 toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -179,23 +227,48 @@ console.log("Hello world!");
                 showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
                 cardView: false,                    //是否显示详细视图
                 detailView: true,                   //是否显示父子表
+
                 columns: [{
                     checkbox: true
                 }, {
+                    field: 'id',
+                    title: '序号',
+                    width: '50px'
+                }, {
                     field: 'name',
-                    title: '部门名称'
+                    title: '父菜单'
                 }, {
-                    field: 'ParentName',
-                    title: '上级部门'
-                }, {
-                    field: 'Level',
-                    title: '部门级别'
-                }, {
-                    field: 'Desc',
-                    title: '描述'
+                    field: 'test',
+                    title: '操作'
                 }],
-                data:parentList
+                onExpandRow:function(index,row,$detail) {
+                    oTableInit.InitSubTable(index,row, $detail);
+                }
+
             });
+        };
+
+        //获取子表
+        oTableInit.InitSubTable = function (index, row, $detail) {
+            var parentid = row.id;
+            if (childList[parentid].length>0){
+                var cur_table = $detail.html('<table></table>').find('table');
+                $(cur_table).bootstrapTable({
+                    clickToSelect: true,
+                    detailView: false,//父子表
+                    uniqueId: "id",
+                    columns: [{
+                        field: 'id',
+                        title: '序号',
+                        width: '50px'
+                    }, {
+                        field: 'name',
+                        title: '文件名称'
+                    }]
+                });
+                $(cur_table).bootstrapTable('load',childList[parentid]);
+            }
+
         };
 
         return oTableInit;

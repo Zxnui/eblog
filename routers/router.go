@@ -12,4 +12,7 @@ func init() {
 	beego.Router("/signOut",&controllers.UserController{},"*:SignOut")
 
 	beego.Router("/eblog/getMenu",&controllers.BlogController{},"*:GetMenu")
+	beego.Router("/eblog/delete",&controllers.BlogController{},"*:DeleteMenu")
+	beego.Router("/eblog/move",&controllers.BlogController{},"*:MoveMenu")
+	beego.Router("/eblog/save",&controllers.BlogController{},"*:SaveBlog")
 }
