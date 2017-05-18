@@ -93,29 +93,21 @@ func (c *BlogController) SaveBlog(){
 	json.Unmarshal(jsonString, &menu)
 
 	pid,_:=strconv.Atoi(parentId)
-	item:=model.MenuDetail{name,menu.MaxId,pid}
 	menu.MaxId = menu.MaxId+1
+	item:=model.MenuDetail{name,menu.MaxId,pid}
 	beego.Debug(len(menu.Menu_list))
-	menu.Menu_list[len(menu.Menu_list)] = item
+	menu.Menu_list = append(menu.Menu_list,item)
+	jsonString,_ = json.Marshal(menu)
 
-	file_base.Write(jsonString)  //写入文件
-	file_base.Sync()
+	beego.Debug(string(jsonString))
+	ioutil.WriteFile(path+"/base.json",jsonString,os.ModeType)
 
 	path=path+"/md/"+parentName
-
-	err:=os.MkdirAll(path,os.ModeDir)//无文档，建立文档
+	err := ioutil.WriteFile(path+"/"+name+".md",[]byte(text),os.ModeType)
 	if util.CheckErrorIsNotExist(err) {
-		file,err:=os.Create(path+"/"+name+".md")
-		defer file.Close()
-		if util.CheckErrorIsNotExist(err) {
-			_, err := file.Write([]byte(text))  //写入文件(字节数组)
-			file.Sync()
-			if util.CheckErrorIsNotExist(err) {
-				c.Data["json"]= model.Res{1,"",menu}
-				c.ServeJSON()
-				return
-			}
-		}
+		c.Data["json"] = model.Res{1, "", menu}
+		c.ServeJSON()
+		return
 	}
 
 	c.Data["json"]= model.Res{0,err.Error(),""}
