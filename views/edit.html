@@ -3,7 +3,7 @@
 <head>
     {{template "commons/head.html" .}}
     <link rel="stylesheet" href="/static/editor/css/editormd.css">
-    <title>编辑</title>
+    <title>MD在线编译器</title>
 </head>
 
 <body>
@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>博客菜单</h5>
+                        <h5>MD在线编译器</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -28,37 +28,6 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <table id="tb_departments"></table>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>日志详情</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="menu_id" class="col-sm-2 control-label">菜单</label>
-                                <div class="col-sm-4">
-                                    <select class="form-control" name="menu_id" id="menu_id">
-                                    </select>
-                                </div>
-                                <div class="col-sm-4">
-                                   <input class="form-control" id="menu_name" placeholder="文件名称">
-                                </div>
-                                <button type="button" class="btn btn-success" id="save_blog">保存</button>
-                            </div>
-                        </form>
                         <div class="row">
                             <div id="layout">
                                 <div id="test-editormd">
@@ -125,154 +94,23 @@ console.log("Hello world!");
         </div>
 
         {{template "commons/html_foot.html" .}}
+        <script src="/static/editor/editormd.min.js"></script>
     </div>
 </div>
 
 {{template "commons/foot.html" .}}
-<script src="/static/editor/editormd.min.js"></script>
 <script>
     var testEditor;
-    var parentList = new Array;
-    var childList = new Array;
 
     $(function() {
         //md在线编译器
         testEditor = editormd("test-editormd", {
             width   : "100%",
-            height  : document.body.clientHeight*.8,
+            height  : document.body.clientHeight*.7,
             syncScrolling : "single",
             path    : "/static/editor/lib/"
         });
-
-        getMenu();
-
-        //1.初始化Table
-        var oTable = new TableInit();
-        oTable.Init();
-
-        $('#save_blog').on('click',function () {
-            $.post('/eblog/save',
-                {
-                    parentId:$('#menu_id').val(),
-                    text:$('#markdown_text ').val(),
-                    name:$('#menu_name').val(),
-                    parentName:$('#menu_id').find("option:selected").text()
-                },
-            function (result) {
-                if (result.code==1){
-                    getMenu();
-                    $('#myModal .modal-body').empty();
-                    $('#myModal .modal-body').append("保存成功");
-                    $('#myModal').modal('show');
-                }else{
-                    $('#myModal .modal-body').empty();
-                    $('#myModal .modal-body').append(result.msg);
-                    $('#myModal').modal('show');
-                }
-            })
-        })
     });
-
-
-    function getMenu() {
-        $.post('/eblog/getMenu',function (result) {
-            if (result.code==1){
-                $.each(result.data.menu_list,function (index,value) {
-                    if(value.parentId==0){
-                        parentList[parentList.length] = value
-                    }else{
-                        if(childList[value.parentId]==undefined){
-                            childList[value.parentId] = new Array
-                        }
-                        childList[value.parentId][childList[value.parentId].length] = value
-
-                    }
-                })
-
-                $('#tb_departments').bootstrapTable("load",parentList)
-
-                //博客保存菜单加载
-                loadMenu();
-            }else{
-                $('#myModal .modal-body').empty();
-                $('#myModal .modal-body').append(result.msg);
-                $('#myModal').modal('show');
-            }
-        },"json")
-    }
-
-    function loadMenu() {
-        $("#menu_id").empty();
-        for(var i=0;i<parentList.length;i++){
-            $("#menu_id").append('<option value="'+parentList[i].id+'">'+parentList[i].name+'</option>')
-        }
-    }
-
-    var TableInit = function () {
-        var oTableInit = new Object();
-
-        oTableInit.Init = function () {
-            $('#tb_departments').bootstrapTable({
-                toolbar: '#toolbar',                //工具按钮用哪个容器
-                striped: true,                      //是否显示行间隔色
-                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-                pagination: false,                   //是否显示分页（*）
-                strictSearch: true,
-                showColumns: true,                  //是否显示所有的列
-                showRefresh: false,                  //是否显示刷新按钮
-                minimumCountColumns: 2,             //最少允许的列数
-                clickToSelect: true,                //是否启用点击选中行
-//                height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
-                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
-                cardView: false,                    //是否显示详细视图
-                detailView: true,                   //是否显示父子表
-
-                columns: [{
-                    checkbox: true
-                }, {
-                    field: 'id',
-                    title: '序号',
-                    width: '50px'
-                }, {
-                    field: 'name',
-                    title: '父菜单'
-                }, {
-                    field: 'test',
-                    title: '操作'
-                }],
-                onExpandRow:function(index,row,$detail) {
-                    oTableInit.InitSubTable(index,row, $detail);
-                }
-
-            });
-        };
-
-        //获取子表
-        oTableInit.InitSubTable = function (index, row, $detail) {
-            var parentid = row.id;
-            if (childList[parentid].length>0){
-                var cur_table = $detail.html('<table></table>').find('table');
-                $(cur_table).bootstrapTable({
-                    clickToSelect: true,
-                    detailView: false,//父子表
-                    uniqueId: "id",
-                    columns: [{
-                        field: 'id',
-                        title: '序号',
-                        width: '50px'
-                    }, {
-                        field: 'name',
-                        title: '文件名称'
-                    }]
-                });
-                $(cur_table).bootstrapTable('load',childList[parentid]);
-            }
-
-        };
-
-        return oTableInit;
-    };
 
 </script>
 </body>
