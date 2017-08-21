@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"eblog/controllers"
+	"github.com/zxnui/eblog/controllers"
 	"github.com/astaxie/beego"
 )
 

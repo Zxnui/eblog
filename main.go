@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "eblog/routers"
+	_ "github.com/zxnui/eblog/routers"
 	"github.com/astaxie/beego"
 )
 
