@@ -8,5 +8,6 @@ import (
 func init() {
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/edit", &controllers.MainController{}, "*:Edit")
-	beego.Router("/wow", &controllers.MainController{}, "*:Wow")
+	beego.Router("/setIp", &controllers.MainController{}, "*:File")
+	beego.Router("/getIp", &controllers.MainController{}, "*:GetNetIp")
 }
